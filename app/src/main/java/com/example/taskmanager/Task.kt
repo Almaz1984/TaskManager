@@ -12,12 +12,12 @@ import com.google.gson.JsonDeserializer
 
 data class Task (
     @SerializedName("id") val id:String,
-    @SerializedName("date_start") val dataStart:Timestamp,
-    @SerializedName("date_finish") val dataFinish:Timestamp,
+    @SerializedName("date_start") val dataStart:Long,
+    @SerializedName("date_finish") val dataFinish:Long,
     @SerializedName("name") val taskName:String,
     @SerializedName("description") val taskDescription:String
     ) {
 }
 
-val deser: JsonDeserializer<Timestamp?> =
-    JsonDeserializer<Timestamp?> { json, typeOfT, context -> if (json == null) null else Timestamp(json.asLong*1000) }
+//val deser: JsonDeserializer<Timestamp?> =
+//    JsonDeserializer<Timestamp?> { json, typeOfT, context -> if (json == null) null else Timestamp(json.asLong*1000) }

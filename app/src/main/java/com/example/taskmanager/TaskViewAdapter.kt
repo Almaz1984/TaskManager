@@ -6,9 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 class CustomRecyclerAdapter(private val names: List<Task>) :
     RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
@@ -33,11 +30,8 @@ class CustomRecyclerAdapter(private val names: List<Task>) :
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.taskItem?.text = names[position].taskName
-        val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S")
-        val timeStart = LocalTime.parse(names[position].dataStart.toString(), dateFormat)
-            .truncatedTo(ChronoUnit.MINUTES)
-        val timeFinish = LocalTime.parse(names[position].dataFinish.toString(), dateFormat)
-            .truncatedTo(ChronoUnit.MINUTES)
+        val timeStart= TimeService().getTimeFromTimestamp(names[position].dataStart)
+        val timeFinish= TimeService().getTimeFromTimestamp(names[position].dataFinish)
         holder.taskDateStart?.text = "${timeStart}-${timeFinish}"
     }
 

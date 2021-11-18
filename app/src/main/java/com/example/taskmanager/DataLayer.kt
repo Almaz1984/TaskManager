@@ -1,10 +1,8 @@
 package com.example.taskmanager
 
 import android.util.Log
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import java.sql.Timestamp
-import java.util.*
+
 
 const val MYTAG="My TAG"
 
@@ -12,9 +10,9 @@ class DataLayer() {
      fun getSelectedDayTaskList(selectedDay:Long): List<Task> {
          val taskList=getSampleListFromJson()
          Log.d(MYTAG, "Time1=${TimeService().getDateFromTimestamp(taskList[0].dataStart)}")
-         Log.d(MYTAG, "Time2=${Timestamp(selectedDay).toString()}")
+         Log.d(MYTAG, TimeService().getDateFromTimestamp(selectedDay/MS_MULIPLIER))
          return taskList.filter{ TimeService().getDateFromTimestamp(it.dataStart)
-             .equals(TimeService().getDateFromTimestamp(Timestamp(selectedDay)))}
+             .equals(TimeService().getDateFromTimestamp(selectedDay/MS_MULIPLIER))}
     }
     private fun getSampleListFromJson():List<Task>{
         val sampleJsonTaskList=listOf(
@@ -38,7 +36,6 @@ class DataLayer() {
 
         val builder = GsonBuilder()
         val gson = builder
-            .registerTypeAdapter(Timestamp::class.java, deser)
             .create()
         for (task in sampleJsonTaskList) {
             taskList.add(gson.fromJson(task, Task::class.java))
