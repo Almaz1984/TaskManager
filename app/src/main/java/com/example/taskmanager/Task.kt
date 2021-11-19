@@ -19,5 +19,5 @@ data class Task (
     ) {
 }
 
-//val deser: JsonDeserializer<Timestamp?> =
+//val deserializeTimestamp: JsonDeserializer<Timestamp?> =
 //    JsonDeserializer<Timestamp?> { json, typeOfT, context -> if (json == null) null else Timestamp(json.asLong*1000) }

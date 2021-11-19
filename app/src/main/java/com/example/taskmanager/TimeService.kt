@@ -6,17 +6,17 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-const val MS_MULIPLIER=1000L
+const val MULTIPLIER=1000L
 
 class TimeService() {
 
     fun getDateFromTimestamp(timestamp: Long): String {
         val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S")
-        return LocalDate.parse(Timestamp(timestamp*MS_MULIPLIER).toString(), dateFormat).toString()
+        return LocalDate.parse(Timestamp(timestamp*MULTIPLIER).toString(), dateFormat).toString()
     }
     fun getTimeFromTimestamp(timestamp: Long): String {
         val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S")
-        return LocalTime.parse(Timestamp(timestamp*MS_MULIPLIER).toString(), dateFormat)
+        return LocalTime.parse(Timestamp(timestamp*MULTIPLIER).toString(), dateFormat)
             .truncatedTo(ChronoUnit.MINUTES).toString()
     }
 }

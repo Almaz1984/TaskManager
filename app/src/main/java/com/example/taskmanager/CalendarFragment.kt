@@ -52,7 +52,6 @@ class CalendarFragment : Fragment() {
     private fun updateTasks(recyclerView: RecyclerView, selectedDay:Long) {
         val selectedDayTaskList = DataLayer().getSelectedDayTaskList(selectedDay)
         recyclerView.adapter = CustomRecyclerAdapter(selectedDayTaskList)
-        Log.d(MYTAG, "selectedDayTaskList=${selectedDayTaskList.toString()}")
     }
 
 }
