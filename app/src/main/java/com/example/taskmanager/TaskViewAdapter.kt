@@ -7,17 +7,40 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomRecyclerAdapter(private val tasks: List<Task>) :
+class CustomRecyclerAdapter(
+    private val taskClickListener: (Long?) -> Int,
+    private var tasks: List<Task> = listOf()
+) :
     RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
-
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var taskName: TextView? = null
-        var taskDate: TextView? = null
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private var taskName: TextView? = null
+        private var taskDate: TextView? = null
+        private var id: String? = null
 
         init {
             taskName = itemView.findViewById(R.id.task_name)
             taskDate = itemView.findViewById(R.id.task_date)
+            itemView.setOnClickListener {
+                taskClickListener.invoke(id?.toLong())
+            }
         }
+
+        @SuppressLint("SetTextI18n")
+        fun bind(
+            position: Int
+        ) {
+            taskName?.text = tasks[position].taskName
+            val timeStart = TimeService.getTimeFromTimestamp(tasks[position].dataStart ?: 0)
+            val timeFinish = TimeService.getTimeFromTimestamp(tasks[position].dataFinish ?: 0)
+            id = tasks[position].id.toString()
+            taskDate?.text = "${timeStart}-${timeFinish}"
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateTasks(tasks: List<Task>) {
+        this.tasks = tasks
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -27,13 +50,10 @@ class CustomRecyclerAdapter(private val tasks: List<Task>) :
         return MyViewHolder(itemView)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.taskName?.text = tasks[position].taskName
-        val timeStart= TimeService().getTimeFromTimestamp(tasks[position].dataStart)
-        val timeFinish= TimeService().getTimeFromTimestamp(tasks[position].dataFinish)
-        holder.taskDate?.text = "${timeStart}-${timeFinish}"
+        holder.bind(position)
     }
+
 
     override fun getItemCount(): Int {
         return tasks.size
