@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class CustomRecyclerAdapter(
-    private val taskClickListener: (Long?) -> Int,
+    private val taskClickListener: (Long) -> Unit,
     private var tasks: List<Task> = listOf()
 ) :
     RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
@@ -21,7 +21,7 @@ class CustomRecyclerAdapter(
             taskName = itemView.findViewById(R.id.task_name)
             taskDate = itemView.findViewById(R.id.task_date)
             itemView.setOnClickListener {
-                taskClickListener.invoke(id?.toLong())
+                taskClickListener.invoke(id?.toLong() ?: 0)
             }
         }
 
@@ -30,8 +30,8 @@ class CustomRecyclerAdapter(
             position: Int
         ) {
             taskName?.text = tasks[position].taskName
-            val timeStart = TimeService.getTimeFromTimestamp(tasks[position].dataStart ?: 0)
-            val timeFinish = TimeService.getTimeFromTimestamp(tasks[position].dataFinish ?: 0)
+            val timeStart = TimeService.getTimeFromTimestamp(tasks[position].dataStart)
+            val timeFinish = TimeService.getTimeFromTimestamp(tasks[position].dataFinish)
             id = tasks[position].id.toString()
             taskDate?.text = "${timeStart}-${timeFinish}"
         }

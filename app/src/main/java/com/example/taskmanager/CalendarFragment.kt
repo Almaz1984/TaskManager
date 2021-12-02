@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
-import java.util.*
+import java.time.LocalDateTime
 
 
 class CalendarFragment : Fragment() {
-    private var selectedDay: Calendar = Calendar.getInstance()
+    private var selectedDay = LocalDateTime.now()
     private var recyclerView: RecyclerView? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,9 +25,11 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val taskClickListener = { id: Long? ->
+        val taskClickListener = { id: Long ->
             val task = getSampleListFromJson().find { it.id == (id) }
-            showTaskFragment(task)
+            if (task != null) {
+                showTaskFragment(task)
+            }
         }
         val taskListAdapter = CustomRecyclerAdapter(taskClickListener)
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view).apply {
@@ -37,19 +39,27 @@ class CalendarFragment : Fragment() {
         }
 
         val calendarView: CalendarView = view.findViewById(R.id.calendar_view)
-        calendarView.date = selectedDay.timeInMillis
+        calendarView.date = TimeService.getTimestampFromDateTime(selectedDay)
+        taskListAdapter.updateTasks(
+            getSelectedDayTaskList(
+                TimeService.getTimestampFromDateTime(
+                    selectedDay
+                )
+            )
+        )
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            selectedDay.apply {
-                set(Calendar.YEAR, year)
-                set(Calendar.MONTH, month)
-                set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            }
-            taskListAdapter.updateTasks(getSelectedDayTaskList(selectedDay.timeInMillis))
+            selectedDay = LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0)
+            taskListAdapter.updateTasks(
+                getSelectedDayTaskList(
+                    TimeService.getTimestampFromDateTime(selectedDay)
+                )
+            )
+
         }
     }
 
-    private fun showTaskFragment(task: Task?): Int {
+    private fun showTaskFragment(task: Task): Int {
         val taskFragment = TaskFragment.newInstance(task)
         return parentFragmentManager
             .beginTransaction()
@@ -90,7 +100,7 @@ class CalendarFragment : Fragment() {
         val gson = builder
             .create()
         for (task in sampleJsonTaskList) {
-            taskList.add(gson.fromJson(task, TaskJson::class.java).mapToTask())
+            taskList.add(gson.fromJson(task, NWTask::class.java).mapToTask())
         }
         return taskList
     }

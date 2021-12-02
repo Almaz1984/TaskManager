@@ -12,7 +12,6 @@ import android.widget.TextView
 private const val TASK_TAG = "Task_tag"
 
 class TaskFragment : Fragment() {
-    private var task: Task? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -24,13 +23,13 @@ class TaskFragment : Fragment() {
         val dateStart: TextView = view.findViewById(R.id.task_date_start)
         val dateFinish: TextView = view.findViewById(R.id.task_date_finish)
         val description: TextView = view.findViewById(R.id.task_description)
-        task = arguments?.getSerializable(TASK_TAG) as Task
-        taskName.text = task?.taskName ?: ""
+        val task = arguments?.getSerializable(TASK_TAG) as Task
+        taskName.text = task.taskName
         dateStart.text =
-            TimeService.getDateTimeFromTimestamp(task?.dataStart ?: 0)
+            TimeService.getDateTimeFromTimestamp(task.dataStart)
         dateFinish.text =
-            TimeService.getDateTimeFromTimestamp(task?.dataFinish ?: 0)
-        description.text = task?.taskDescription ?: ""
+            TimeService.getDateTimeFromTimestamp(task.dataFinish)
+        description.text = task.taskDescription
         return view
     }
 
@@ -38,7 +37,7 @@ class TaskFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(
-            task: Task?
+            task: Task
         ) =
             TaskFragment().apply {
                 arguments = Bundle().apply {

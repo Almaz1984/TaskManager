@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 
-data class TaskJson(
+data class NWTask(
     @SerializedName("id") val id: Long?,
     @SerializedName("date_start") val dataStart: Long?,
     @SerializedName("date_finish") val dataFinish: Long?,
@@ -12,10 +12,10 @@ data class TaskJson(
     @SerializedName("description") val taskDescription: String?
 ) : Serializable {
     fun mapToTask() = Task(
-        id,
-        dataStart,
-        dataFinish,
-        taskName,
-        taskDescription
+        id ?: 0,
+        dataStart ?: 0,
+        dataFinish ?: 0,
+        taskName ?: "",
+        taskDescription ?: ""
     )
 }
