@@ -36,14 +36,13 @@ class TaskFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(
-            task: Task
-        ) =
-            TaskFragment().apply {
+        fun newInstance(task: Task): TaskFragment {
+            return TaskFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(TASK_TAG, task)
                 }
             }
+        }
 
     }
 }

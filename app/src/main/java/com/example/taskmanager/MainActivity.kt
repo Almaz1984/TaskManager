@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         val calendarFragment = CalendarFragment()
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container, calendarFragment)
+            .replace(R.id.fragment_container, calendarFragment)
             .commit()
     }
 

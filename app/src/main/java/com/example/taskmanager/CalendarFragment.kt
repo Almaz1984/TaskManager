@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CalendarView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +14,12 @@ import com.google.gson.GsonBuilder
 import java.time.LocalDateTime
 
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), CalendarContract.View {
     private var selectedDay = LocalDateTime.now()
-    private var recyclerView: RecyclerView? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var button: Button
+    private lateinit var presenter: CalendarPresenter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,8 +27,18 @@ class CalendarFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
     }
 
+    override fun showText(message: String) {
+        super.showText(message)
+        button.text = message
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        presenter = CalendarPresenter(view = this)
+        button = view.findViewById(R.id.button)
+        button.setOnClickListener { presenter.onButtonClicked() }
+
         val taskClickListener = { id: Long ->
             val task = getSampleListFromJson().find { it.id == (id) }
             if (task != null) {
@@ -55,7 +69,6 @@ class CalendarFragment : Fragment() {
                     TimeService.getTimestampFromDateTime(selectedDay)
                 )
             )
-
         }
     }
 
