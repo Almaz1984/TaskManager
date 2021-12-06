@@ -1,4 +1,4 @@
-package com.example.taskmanager
+package com.example.taskmanager.calendar.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.taskmanager.R
+import com.example.taskmanager.Task
+import com.example.taskmanager.TimeService
 
-class CustomRecyclerAdapter(
+class TaskAdapter(
     private val taskClickListener: (Long) -> Unit,
     private var tasks: List<Task> = listOf()
 ) :
-    RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
+    RecyclerView.Adapter<TaskAdapter.MyViewHolder>() {
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var taskName: TextView? = null
         private var taskDate: TextView? = null
@@ -53,7 +56,6 @@ class CustomRecyclerAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(position)
     }
-
 
     override fun getItemCount(): Int {
         return tasks.size

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-
 private const val TASK_TAG = "Task_tag"
 
 class TaskFragment : Fragment() {

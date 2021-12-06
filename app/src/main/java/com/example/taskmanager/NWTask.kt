@@ -3,7 +3,6 @@ package com.example.taskmanager
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-
 data class NWTask(
     @SerializedName("id") val id: Long?,
     @SerializedName("date_start") val dataStart: Long?,
