@@ -1,4 +1,4 @@
-package com.example.taskmanager
+package com.example.taskmanager.data.models
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

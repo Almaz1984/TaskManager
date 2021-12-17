@@ -1,4 +1,4 @@
-package com.example.taskmanager.calendar.adapter
+package com.example.taskmanager.fragments.calendar.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.R
-import com.example.taskmanager.Task
 import com.example.taskmanager.TimeService
+import com.example.taskmanager.data.models.Task
 
 class TaskAdapter(
     private val taskClickListener: (Long) -> Unit,
@@ -36,7 +36,7 @@ class TaskAdapter(
             val timeStart = TimeService.getTimeFromTimestamp(tasks[position].dataStart)
             val timeFinish = TimeService.getTimeFromTimestamp(tasks[position].dataFinish)
             id = tasks[position].id.toString()
-            taskDate?.text = "${timeStart}-${timeFinish}"
+            taskDate?.text = "$timeStart-$timeFinish"
         }
     }
 

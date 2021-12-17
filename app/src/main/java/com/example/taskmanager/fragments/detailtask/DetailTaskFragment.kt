@@ -1,20 +1,24 @@
-package com.example.taskmanager
+package com.example.taskmanager.fragments.detailtask
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.example.taskmanager.R
+import com.example.taskmanager.TimeService
+import com.example.taskmanager.data.models.Task
 
 private const val TASK_TAG = "Task_tag"
 
-class TaskFragment : Fragment() {
+class DetailTaskFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task, container, false)
@@ -35,13 +39,12 @@ class TaskFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(task: Task): TaskFragment {
-            return TaskFragment().apply {
+        fun newInstance(task: Task): DetailTaskFragment {
+            return DetailTaskFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(TASK_TAG, task)
                 }
             }
         }
-
     }
 }
