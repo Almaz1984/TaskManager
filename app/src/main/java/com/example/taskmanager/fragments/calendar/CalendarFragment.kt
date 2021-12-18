@@ -15,6 +15,8 @@ import com.example.taskmanager.TimeService
 import com.example.taskmanager.data.models.Task
 import com.example.taskmanager.fragments.calendar.adapter.TaskAdapter
 import com.example.taskmanager.fragments.detailtask.DetailTaskFragment
+import com.example.taskmanager.fragments.newtask.NewTaskFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDateTime
 
 class CalendarFragment : Fragment(), CalendarContract.View {
@@ -61,10 +63,22 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             presenter!!.onDateChanged(LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0))
         }
+
+        val addTaskButton = view.findViewById<FloatingActionButton>(R.id.add_task_button)
+        addTaskButton.setOnClickListener { presenter!!.onAddTaskClicked() }
     }
 
     override fun showDetailTaskFragment(task: Task) {
         val taskFragment = DetailTaskFragment.newInstance(task)
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, taskFragment)
+            .addToBackStack("Calendar")
+            .commit()
+    }
+
+    override fun showNewTaskFragment() {
+        val taskFragment = NewTaskFragment.newInstance()
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, taskFragment)

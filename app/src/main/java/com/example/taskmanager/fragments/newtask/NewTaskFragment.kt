@@ -16,4 +16,12 @@ class NewTaskFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_new_task, container, false)
     }
+
+    companion object {
+
+        @JvmStatic
+        fun newInstance(): NewTaskFragment {
+            return NewTaskFragment()
+        }
+    }
 }

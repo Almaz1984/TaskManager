@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:fontFamily="monospace"
-        android:text="@string/task_name_text"
+        android:text="@string/task_name"
         android:textSize="20sp" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_gravity="center_vertical|start"
         android:layout_marginTop="10dp"
         android:fontFamily="monospace"
-        android:text="@string/task_date_start_text"
+        android:text="@string/task_date_start"
         android:textSize="20sp" />
 
     <TextView
@@ -47,7 +47,7 @@
         android:layout_gravity="center_vertical|start"
         android:layout_marginTop="10dp"
         android:fontFamily="monospace"
-        android:text="@string/task_date_finish_text"
+        android:text="@string/task_date_finish"
         android:textSize="20sp" />
 
     <TextView
@@ -65,7 +65,7 @@
         android:layout_gravity="center_vertical|start"
         android:layout_marginTop="10dp"
         android:fontFamily="monospace"
-        android:text="@string/task_description_text"
+        android:text="@string/task_description"
         android:textSize="20sp" />
 
     <TextView

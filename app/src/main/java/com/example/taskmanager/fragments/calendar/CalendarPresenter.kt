@@ -35,6 +35,9 @@ class CalendarPresenter(private val view: CalendarContract.View) :
             view.showDetailTaskFragment(task)
         }
     }
+    override fun onAddTaskClicked() {
+        view.showNewTaskFragment()
+    }
 
     override fun onDateChanged(selectedDay: LocalDateTime) {
         val selectedDayTimeStamp = TimeService.getTimestampFromDateTime(selectedDay)
