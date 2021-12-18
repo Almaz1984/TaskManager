@@ -41,10 +41,6 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         presenter = null
     }
 
-    override fun updateTaskList(taskList: List<Task>) {
-        taskListAdapter.updateTasks(taskList)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -66,6 +62,10 @@ class CalendarFragment : Fragment(), CalendarContract.View {
 
         val addTaskButton = view.findViewById<FloatingActionButton>(R.id.add_task_button)
         addTaskButton.setOnClickListener { presenter!!.onAddTaskClicked() }
+    }
+
+    override fun updateTaskList(taskList: List<Task>) {
+        taskListAdapter.updateTasks(taskList)
     }
 
     override fun showDetailTaskFragment(task: Task) {
