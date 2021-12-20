@@ -10,6 +10,8 @@ import java.time.temporal.ChronoUnit
 
 const val TIMESTAMP_PARSE_PATTERN = "yyyy-MM-dd HH:mm:ss[.SSS][.SS][.S]"
 const val DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm"
+const val DATE_FORMATTER = "dd MMM, yyyy"
+const val TIME_FORMATTER = "hh:mm a"
 
 object TimeService {
 
@@ -33,5 +35,19 @@ object TimeService {
 
     fun getTimestampFromDateTime(dateTime: LocalDateTime): Long {
         return dateTime.atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
+    }
+
+    fun getTimestampFromTime(date: LocalDate, time: LocalTime): Long {
+        return LocalDateTime.of(date, time).atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
+    }
+
+    fun getFormattedDate(dateTime: LocalDateTime): String {
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMATTER)
+        return dateTime.format(formatter)
+    }
+
+    fun getFormattedTime(time: LocalTime): String {
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(TIME_FORMATTER)
+        return time.format(formatter)
     }
 }

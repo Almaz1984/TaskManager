@@ -23,22 +23,18 @@ class CalendarFragment : Fragment(), CalendarContract.View {
     private lateinit var recyclerView: RecyclerView
     private lateinit var taskListAdapter: TaskAdapter
     private var presenter: CalendarPresenter? = null
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_calendar, container, false)
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         presenter = CalendarPresenter(view = this)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        presenter = null
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(R.layout.fragment_calendar, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +58,11 @@ class CalendarFragment : Fragment(), CalendarContract.View {
 
         val addTaskButton = view.findViewById<FloatingActionButton>(R.id.add_task_button)
         addTaskButton.setOnClickListener { presenter!!.onAddTaskClicked() }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter = null
     }
 
     override fun updateTaskList(taskList: List<Task>) {

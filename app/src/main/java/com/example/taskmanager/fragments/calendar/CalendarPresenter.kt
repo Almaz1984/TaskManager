@@ -35,6 +35,7 @@ class CalendarPresenter(private val view: CalendarContract.View) :
             view.showDetailTaskFragment(task)
         }
     }
+
     override fun onAddTaskClicked() {
         view.showNewTaskFragment()
     }
@@ -47,6 +48,7 @@ class CalendarPresenter(private val view: CalendarContract.View) :
             }
             view.updateTaskList(selectedDayTaskList)
         }
+        this.selectedDay = selectedDay
     }
 
     override fun onDateChanged() {
