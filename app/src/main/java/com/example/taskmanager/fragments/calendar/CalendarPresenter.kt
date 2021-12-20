@@ -5,6 +5,7 @@ import com.example.taskmanager.data.App
 import com.example.taskmanager.data.TaskDatabase
 import com.example.taskmanager.data.models.NWTask
 import com.example.taskmanager.data.models.Task
+import com.example.taskmanager.data.models.TaskData
 import com.example.taskmanager.data.repository.TaskRepository
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -29,10 +30,12 @@ class CalendarPresenter(private val view: CalendarContract.View) :
     }
 
     override fun onTaskClicked(id: Long) {
-
-        val task = getSampleListFromJson().find { it.id == (id) }
-        if (task != null) {
-            view.showDetailTaskFragment(task)
+        var task: List<TaskData>
+        scope.launch(Dispatchers.Main) {
+            task = withContext(Dispatchers.IO) {
+                repository.getTaskById(id)
+            }
+            view.showDetailTaskFragment(task[0].mapToTask())
         }
     }
 
