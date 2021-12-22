@@ -5,11 +5,11 @@ import java.time.LocalDateTime
 interface NewTaskContract {
     interface View {
         fun showDatePicker()
-        fun showStartTimePicker()
-        fun showEndTimePicker()
+        fun showTimeFromPicker()
+        fun showTimeToPicker()
         fun setDate(formattedDate: String)
-        fun setStartTime(formattedTime: String)
-        fun setEndTime(formattedTime: String)
+        fun setTimeFrom(formattedTime: String)
+        fun setTimeTo(formattedTime: String)
         fun setSaveButtonStatus(enabled: Boolean)
         fun getTaskName(): String
         fun getDescription(): String
@@ -20,8 +20,8 @@ interface NewTaskContract {
         fun onFieldClicked(field: String)
         fun onSaveButtonClicked()
         fun onDateSet(year: Int, month: Int, dayOfMonth: Int)
-        fun onStartTimeSet(hourOfDay: Int, minute: Int)
-        fun onEndTimeSet(hourOfDay: Int, minute: Int)
+        fun onTimeFromSet(hourOfDay: Int, minute: Int)
+        fun onTimeToSet(hourOfDay: Int, minute: Int)
         fun getCurrentDate(): LocalDateTime
     }
 }

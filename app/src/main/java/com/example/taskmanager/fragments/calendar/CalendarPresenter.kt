@@ -55,13 +55,7 @@ class CalendarPresenter(private val view: CalendarContract.View) :
     }
 
     override fun onDateChanged() {
-        val selectedDayTimeStamp = TimeService.getTimestampFromDateTime(selectedDay)
-        scope.launch(Dispatchers.Main) {
-            val selectedDayTaskList = withContext(Dispatchers.IO) {
-                getSelectedDayTaskList(selectedDayTimeStamp)
-            }
-            view.updateTaskList(selectedDayTaskList)
-        }
+        return onDateChanged(selectedDay)
     }
 
     private suspend fun getSelectedDayTaskList(selectedDay: Long): List<Task> {

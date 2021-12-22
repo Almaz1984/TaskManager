@@ -7,13 +7,13 @@
     <string name="new_task_title">Create task</string>
     <string name="choose_date">Choose date</string>
     <string name="date">Date</string>
-    <string name="start_time">Start time</string>
-    <string name="end_time">End time</string>
+    <string name="time_from">From</string>
+    <string name="time_to">To</string>
     <string name="add_task_hint">Add task</string>
     <string name="choose_time">Choose time</string>
     <string name="input_task_name">Input task name</string>
-    <string name="choose_start_time">Choose start time</string>
-    <string name="choose_end_time">Choose end time</string>
+    <string name="choose_time_from">Choose time from</string>
+    <string name="choose_time_to">Choose time to</string>
     <string name="input_description">Input description</string>
     <string name="save_task">Save task</string>
 </resources>

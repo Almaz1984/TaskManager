@@ -18,8 +18,8 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
     private var presenter: NewTaskPresenter? = null
     private lateinit var taskName: EditText
     private lateinit var dateEdit: EditText
-    private lateinit var startTimeEdit: EditText
-    private lateinit var endTimeEdit: EditText
+    private lateinit var timeFromEdit: EditText
+    private lateinit var timeToEdit: EditText
     private lateinit var description: EditText
     private lateinit var saveButton: Button
 
@@ -45,11 +45,11 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
         dateEdit = view.findViewById(R.id.date_edit)
         dateEdit.setOnClickListener { presenter!!.onFieldClicked(DATE) }
 
-        startTimeEdit = view.findViewById(R.id.start_time_edit)
-        startTimeEdit.setOnClickListener { presenter!!.onFieldClicked(START_TIME) }
+        timeFromEdit = view.findViewById(R.id.time_from_edit)
+        timeFromEdit.setOnClickListener { presenter!!.onFieldClicked(TIME_FROM) }
 
-        endTimeEdit = view.findViewById(R.id.end_time_edit)
-        endTimeEdit.setOnClickListener { presenter!!.onFieldClicked(END_TIME) }
+        timeToEdit = view.findViewById(R.id.time_to_edit)
+        timeToEdit.setOnClickListener { presenter!!.onFieldClicked(TIME_TO) }
 
         description = view.findViewById(R.id.description_edit)
         description.setOnClickListener { presenter!!.onFieldClicked(DESCRIPTION) }
@@ -76,24 +76,24 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
         datePicker.show()
     }
 
-    override fun showStartTimePicker() {
+    override fun showTimeFromPicker() {
         val currentTime = presenter!!.getCurrentDate().toLocalTime()
         val timePicker = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                presenter!!.onStartTimeSet(hourOfDay, minute)
+                presenter!!.onTimeFromSet(hourOfDay, minute)
             },
             currentTime.hour, currentTime.minute, IS_24_TIME_FORMAT
         )
         timePicker.show()
     }
 
-    override fun showEndTimePicker() {
+    override fun showTimeToPicker() {
         val currentTime = presenter!!.getCurrentDate().toLocalTime()
         val timePicker = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                presenter!!.onEndTimeSet(hourOfDay, minute)
+                presenter!!.onTimeToSet(hourOfDay, minute)
             },
             currentTime.hour, currentTime.minute, IS_24_TIME_FORMAT
         )
@@ -104,12 +104,12 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
         dateEdit.setText(formattedDate)
     }
 
-    override fun setStartTime(formattedTime: String) {
-        startTimeEdit.setText(formattedTime)
+    override fun setTimeFrom(formattedTime: String) {
+        timeFromEdit.setText(formattedTime)
     }
 
-    override fun setEndTime(formattedTime: String) {
-        endTimeEdit.setText(formattedTime)
+    override fun setTimeTo(formattedTime: String) {
+        timeToEdit.setText(formattedTime)
     }
 
     override fun setSaveButtonStatus(enabled: Boolean) {

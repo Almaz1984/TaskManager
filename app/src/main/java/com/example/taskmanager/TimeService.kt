@@ -15,11 +15,6 @@ const val TIME_FORMATTER = "hh:mm a"
 
 object TimeService {
 
-    fun getDateFromTimestamp(timestamp: Long): String {
-        val dateFormat = DateTimeFormatter.ofPattern(TIMESTAMP_PARSE_PATTERN)
-        return LocalDate.parse(Timestamp(timestamp).toString(), dateFormat).toString()
-    }
-
     fun getTimeFromTimestamp(timestamp: Long): String {
         val dateFormat = DateTimeFormatter.ofPattern(TIMESTAMP_PARSE_PATTERN)
         return LocalTime.parse(Timestamp(timestamp).toString(), dateFormat)
@@ -33,12 +28,12 @@ object TimeService {
             .format(dateTimeFormat).toString()
     }
 
-    fun getTimestampFromDateTime(dateTime: LocalDateTime): Long {
-        return dateTime.atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
+    fun getTimestampFromDateTime(date: LocalDate, time: LocalTime): Long {
+        return getTimestampFromDateTime(LocalDateTime.of(date, time))
     }
 
-    fun getTimestampFromTime(date: LocalDate, time: LocalTime): Long {
-        return LocalDateTime.of(date, time).atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
+    fun getTimestampFromDateTime(dateTime: LocalDateTime): Long {
+        return dateTime.atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
     }
 
     fun getFormattedDate(dateTime: LocalDateTime): String {

@@ -13,16 +13,16 @@ import java.time.LocalTime
 
 const val TASK_NAME = "Task name"
 const val DATE = "Date"
-const val START_TIME = "Start time"
-const val END_TIME = "End time"
+const val TIME_FROM = "Time from"
+const val TIME_TO = "Time to"
 const val DESCRIPTION = "Description"
 
 internal class NewTaskPresenter(private val view: NewTaskContract.View) :
     NewTaskContract.Presenter {
     private var taskName: String = ""
     private var date: LocalDateTime? = null
-    private var startTime: LocalTime? = null
-    private var endTime: LocalTime? = null
+    private var timeFrom: LocalTime? = null
+    private var timeTo: LocalTime? = null
     private var description: String = ""
     private var db: TaskDatabase = App.instance.getDatabase()!!
     private val taskDao = db.taskDao()
@@ -40,21 +40,11 @@ internal class NewTaskPresenter(private val view: NewTaskContract.View) :
                 checkFields()
             }
             DATE -> view.showDatePicker()
-            START_TIME -> view.showStartTimePicker()
-            END_TIME -> view.showEndTimePicker()
+            TIME_FROM -> view.showTimeFromPicker()
+            TIME_TO -> view.showTimeToPicker()
             DESCRIPTION -> {
                 description = view.getDescription()
             }
-        }
-    }
-
-    override fun onSaveButtonClicked() {
-
-        val startDate = TimeService.getTimestampFromTime(date!!.toLocalDate(), startTime!!)
-        val finishDate = TimeService.getTimestampFromTime(date!!.toLocalDate(), endTime!!)
-        val newTask = TaskData(0, startDate, finishDate, taskName, description)
-        scope.launch(Dispatchers.IO) {
-            repository.insertTask(newTask)
         }
     }
 
@@ -66,19 +56,19 @@ internal class NewTaskPresenter(private val view: NewTaskContract.View) :
         checkFields()
     }
 
-    override fun onStartTimeSet(hourOfDay: Int, minute: Int) {
+    override fun onTimeFromSet(hourOfDay: Int, minute: Int) {
         val time: LocalTime = LocalTime.of(hourOfDay, minute, 0, 0)
         val formattedTime = TimeService.getFormattedTime(time)
-        view.setStartTime(formattedTime)
-        startTime = time
+        view.setTimeFrom(formattedTime)
+        timeFrom = time
         checkFields()
     }
 
-    override fun onEndTimeSet(hourOfDay: Int, minute: Int) {
+    override fun onTimeToSet(hourOfDay: Int, minute: Int) {
         val time: LocalTime = LocalTime.of(hourOfDay, minute, 0, 0)
         val formattedTime = TimeService.getFormattedTime(time)
-        endTime = time
-        view.setEndTime(formattedTime)
+        timeTo = time
+        view.setTimeTo(formattedTime)
         checkFields()
     }
 
@@ -88,9 +78,19 @@ internal class NewTaskPresenter(private val view: NewTaskContract.View) :
         val enabled = !(
             taskName.isEmpty() ||
                 date == null ||
-                startTime == null ||
-                endTime == null
+                timeFrom == null ||
+                timeTo == null
             )
         view.setSaveButtonStatus(enabled)
+    }
+
+    override fun onSaveButtonClicked() {
+
+        val startDate = TimeService.getTimestampFromDateTime(date!!.toLocalDate(), timeFrom!!)
+        val finishDate = TimeService.getTimestampFromDateTime(date!!.toLocalDate(), timeTo!!)
+        val newTask = TaskData(0, startDate, finishDate, taskName, description)
+        scope.launch(Dispatchers.IO) {
+            repository.insertTask(newTask)
+        }
     }
 }
