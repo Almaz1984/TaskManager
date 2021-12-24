@@ -4,7 +4,7 @@
     package="com.example.taskmanager">
 
     <application
-        android:name="com.example.taskmanager.data.App"
+        android:name="com.example.taskmanager.App"
         android:allowBackup="true"
         android:fullBackupOnly="true"
         android:icon="@mipmap/ic_launcher"

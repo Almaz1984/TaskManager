@@ -13,7 +13,7 @@ interface CalendarContract {
     interface Presenter {
         fun onDateChanged(selectedDay: LocalDateTime)
         fun onDateChanged()
-        fun onTaskClicked(id: Long)
+        fun onTaskClicked(id: Long?)
         fun onAddTaskClicked()
         fun getSelectedDate(): LocalDateTime
     }

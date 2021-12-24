@@ -1,4 +1,4 @@
-package com.example.taskmanager
+package com.example.taskmanager.utils
 
 import java.sql.Timestamp
 import java.time.LocalDate
@@ -13,7 +13,7 @@ const val DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm"
 const val DATE_FORMATTER = "dd MMM, yyyy"
 const val TIME_FORMATTER = "hh:mm a"
 
-object TimeService {
+object TimeUtils {
 
     fun getTimeFromTimestamp(timestamp: Long): String {
         val dateFormat = DateTimeFormatter.ofPattern(TIMESTAMP_PARSE_PATTERN)

@@ -1,8 +1,8 @@
 package com.example.taskmanager.fragments.newtask
 
-import com.example.taskmanager.TimeService
-import com.example.taskmanager.data.App
-import com.example.taskmanager.data.TaskDatabase
+import com.example.taskmanager.App
+import com.example.taskmanager.utils.TimeUtils
+import com.example.taskmanager.data.dao.TaskDatabase
 import com.example.taskmanager.data.models.TaskData
 import com.example.taskmanager.data.repository.TaskRepository
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +24,7 @@ internal class NewTaskPresenter(private val view: NewTaskContract.View) :
     private var timeFrom: LocalTime? = null
     private var timeTo: LocalTime? = null
     private var description: String = ""
-    private var db: TaskDatabase = App.instance.getDatabase()!!
+    private var db: TaskDatabase = App.instance.getDatabase()
     private val taskDao = db.taskDao()
     private val repository: TaskRepository = TaskRepository(taskDao)
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
@@ -33,24 +33,29 @@ internal class NewTaskPresenter(private val view: NewTaskContract.View) :
         view.showDatePicker()
     }
 
-    override fun onFieldClicked(field: String) {
-        when (field) {
+    override fun onEditTextChanged(editTextName: String, changedText: String) {
+        when (editTextName) {
             TASK_NAME -> {
-                taskName = view.getTaskName()
+                taskName = changedText
                 checkFields()
             }
+            DESCRIPTION -> {
+                description = changedText
+            }
+        }
+    }
+
+    override fun onEditTextClicked(editTextName: String) {
+        when (editTextName) {
             DATE -> view.showDatePicker()
             TIME_FROM -> view.showTimeFromPicker()
             TIME_TO -> view.showTimeToPicker()
-            DESCRIPTION -> {
-                description = view.getDescription()
-            }
         }
     }
 
     override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
         val date: LocalDateTime = LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0)
-        val formattedDate = TimeService.getFormattedDate(date)
+        val formattedDate = TimeUtils.getFormattedDate(date)
         view.setDate(formattedDate)
         this.date = date
         checkFields()
@@ -58,7 +63,7 @@ internal class NewTaskPresenter(private val view: NewTaskContract.View) :
 
     override fun onTimeFromSet(hourOfDay: Int, minute: Int) {
         val time: LocalTime = LocalTime.of(hourOfDay, minute, 0, 0)
-        val formattedTime = TimeService.getFormattedTime(time)
+        val formattedTime = TimeUtils.getFormattedTime(time)
         view.setTimeFrom(formattedTime)
         timeFrom = time
         checkFields()
@@ -66,7 +71,7 @@ internal class NewTaskPresenter(private val view: NewTaskContract.View) :
 
     override fun onTimeToSet(hourOfDay: Int, minute: Int) {
         val time: LocalTime = LocalTime.of(hourOfDay, minute, 0, 0)
-        val formattedTime = TimeService.getFormattedTime(time)
+        val formattedTime = TimeUtils.getFormattedTime(time)
         timeTo = time
         view.setTimeTo(formattedTime)
         checkFields()
@@ -76,21 +81,23 @@ internal class NewTaskPresenter(private val view: NewTaskContract.View) :
 
     private fun checkFields() {
         val enabled = !(
-            taskName.isEmpty() ||
-                date == null ||
-                timeFrom == null ||
-                timeTo == null
-            )
+                taskName.isEmpty() ||
+                        date == null ||
+                        timeFrom == null ||
+                        timeTo == null
+                )
         view.setSaveButtonStatus(enabled)
     }
 
     override fun onSaveButtonClicked() {
 
-        val startDate = TimeService.getTimestampFromDateTime(date!!.toLocalDate(), timeFrom!!)
-        val finishDate = TimeService.getTimestampFromDateTime(date!!.toLocalDate(), timeTo!!)
+        val startDate = TimeUtils.getTimestampFromDateTime(date!!.toLocalDate(), timeFrom!!)
+        val finishDate = TimeUtils.getTimestampFromDateTime(date!!.toLocalDate(), timeTo!!)
         val newTask = TaskData(0, startDate, finishDate, taskName, description)
         scope.launch(Dispatchers.IO) {
             repository.insertTask(newTask)
         }
+        view.backToPreviousFragment()
     }
+
 }

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.R
-import com.example.taskmanager.TimeService
+import com.example.taskmanager.utils.TimeUtils
 import com.example.taskmanager.data.models.Task
 import com.example.taskmanager.fragments.calendar.adapter.TaskAdapter
 import com.example.taskmanager.fragments.detailtask.DetailTaskFragment
@@ -40,8 +40,10 @@ class CalendarFragment : Fragment(), CalendarContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val taskClickListener = { id: Long -> presenter!!.onTaskClicked(id) }
+        val taskClickListener =
+            { id: Long? -> presenter?.onTaskClicked(id) ?: throw IllegalStateException() }
         taskListAdapter = TaskAdapter(taskClickListener)
+
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view).apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -49,15 +51,15 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         }
 
         val calendarView: CalendarView = view.findViewById(R.id.calendar_view)
-        calendarView.date = TimeService.getTimestampFromDateTime(presenter!!.getSelectedDate())
-        presenter!!.onDateChanged(presenter!!.getSelectedDate())
+        calendarView.date = TimeUtils.getTimestampFromDateTime(presenter!!.getSelectedDate())
+        presenter?.getSelectedDate()?.let { presenter?.onDateChanged(it) }
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            presenter!!.onDateChanged(LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0))
+            presenter?.onDateChanged(LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0))
         }
 
         val addTaskButton = view.findViewById<FloatingActionButton>(R.id.add_task_button)
-        addTaskButton.setOnClickListener { presenter!!.onAddTaskClicked() }
+        addTaskButton.setOnClickListener { presenter?.onAddTaskClicked() }
     }
 
     override fun onDetach() {
@@ -74,7 +76,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, taskFragment)
-            .addToBackStack("Calendar")
+            .addToBackStack(null)
             .commit()
     }
 
@@ -83,7 +85,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, taskFragment)
-            .addToBackStack("Calendar")
+            .addToBackStack(null)
             .commit()
     }
 }

@@ -13,11 +13,13 @@ interface NewTaskContract {
         fun setSaveButtonStatus(enabled: Boolean)
         fun getTaskName(): String
         fun getDescription(): String
+        fun backToPreviousFragment()
     }
 
     interface Presenter {
         fun onDateClicked()
-        fun onFieldClicked(field: String)
+        fun onEditTextChanged(editTextName: String, changedText: String)
+        fun onEditTextClicked(editTextName: String)
         fun onSaveButtonClicked()
         fun onDateSet(year: Int, month: Int, dayOfMonth: Int)
         fun onTimeFromSet(hourOfDay: Int, minute: Int)

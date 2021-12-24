@@ -9,10 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.example.taskmanager.R
-
-const val IS_24_TIME_FORMAT = false
 
 class NewTaskFragment : Fragment(), NewTaskContract.View {
     private var presenter: NewTaskPresenter? = null
@@ -40,23 +39,37 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         taskName = view.findViewById(R.id.task_name_edit)
-        taskName.setOnClickListener { presenter!!.onFieldClicked(TASK_NAME) }
+        taskName.doOnTextChanged { text, _, _, _ ->
+            run {
+                presenter?.onEditTextChanged(
+                    TASK_NAME,
+                    text.toString()
+                )
+            }
+        }
 
         dateEdit = view.findViewById(R.id.date_edit)
-        dateEdit.setOnClickListener { presenter!!.onFieldClicked(DATE) }
+        dateEdit.setOnClickListener { presenter?.onEditTextClicked(DATE) }
 
         timeFromEdit = view.findViewById(R.id.time_from_edit)
-        timeFromEdit.setOnClickListener { presenter!!.onFieldClicked(TIME_FROM) }
+        timeFromEdit.setOnClickListener { presenter?.onEditTextClicked(TIME_FROM) }
 
         timeToEdit = view.findViewById(R.id.time_to_edit)
-        timeToEdit.setOnClickListener { presenter!!.onFieldClicked(TIME_TO) }
+        timeToEdit.setOnClickListener { presenter?.onEditTextClicked(TIME_TO) }
 
         description = view.findViewById(R.id.description_edit)
-        description.setOnClickListener { presenter!!.onFieldClicked(DESCRIPTION) }
+        description.doOnTextChanged { text, _, _, _ ->
+            run {
+                presenter?.onEditTextChanged(
+                    DESCRIPTION,
+                    text.toString()
+                )
+            }
+        }
 
         saveButton = view.findViewById(R.id.save_button)
         saveButton.isEnabled = false
-        saveButton.setOnClickListener { presenter!!.onSaveButtonClicked() }
+        saveButton.setOnClickListener { presenter?.onSaveButtonClicked() }
     }
 
     override fun onDetach() {
@@ -81,7 +94,7 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
         val timePicker = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                presenter!!.onTimeFromSet(hourOfDay, minute)
+                presenter?.onTimeFromSet(hourOfDay, minute)
             },
             currentTime.hour, currentTime.minute, IS_24_TIME_FORMAT
         )
@@ -93,7 +106,7 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
         val timePicker = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                presenter!!.onTimeToSet(hourOfDay, minute)
+                presenter?.onTimeToSet(hourOfDay, minute)
             },
             currentTime.hour, currentTime.minute, IS_24_TIME_FORMAT
         )
@@ -120,7 +133,12 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
 
     override fun getDescription() = description.text.toString()
 
+    override fun backToPreviousFragment() {
+        activity?.onBackPressed()
+    }
+
     companion object {
+        const val IS_24_TIME_FORMAT = false
 
         @JvmStatic
         fun newInstance(): NewTaskFragment {

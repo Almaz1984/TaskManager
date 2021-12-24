@@ -1,4 +1,4 @@
-package com.example.taskmanager.data
+package com.example.taskmanager.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -13,7 +13,7 @@ interface TaskDao {
     suspend fun getAllDayTasks(dateFrom: Long, dateTo: Long): List<TaskData>
 
     @Query("SELECT * FROM task_table WHERE id = :id")
-    suspend fun getTaskById(id: Long): List<TaskData>
+    suspend fun getTaskById(id: Long?): List<TaskData>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTask(taskData: TaskData)
