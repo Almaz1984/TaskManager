@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.R
-import com.example.taskmanager.TimeService
 import com.example.taskmanager.data.models.Task
+import com.example.taskmanager.utils.TimeUtils
 
 class TaskAdapter(
-    private val taskClickListener: (Long) -> Unit,
-    private var tasks: List<Task> = listOf()
+    private val taskClickListener: (Long?) -> Unit?,
+    private val tasks: MutableList<Task> = mutableListOf()
 ) :
     RecyclerView.Adapter<TaskAdapter.MyViewHolder>() {
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,7 +24,7 @@ class TaskAdapter(
             taskName = itemView.findViewById(R.id.task_name)
             taskDate = itemView.findViewById(R.id.task_date)
             itemView.setOnClickListener {
-                taskClickListener.invoke(id?.toLong() ?: 0)
+                taskClickListener.invoke(id?.toLong())
             }
         }
 
@@ -33,8 +33,8 @@ class TaskAdapter(
             position: Int
         ) {
             taskName?.text = tasks[position].taskName
-            val timeStart = TimeService.getTimeFromTimestamp(tasks[position].dataStart)
-            val timeFinish = TimeService.getTimeFromTimestamp(tasks[position].dataFinish)
+            val timeStart = TimeUtils.getTimeFromTimestamp(tasks[position].dataStart)
+            val timeFinish = TimeUtils.getTimeFromTimestamp(tasks[position].dataFinish)
             id = tasks[position].id.toString()
             taskDate?.text = "$timeStart-$timeFinish"
         }
@@ -42,7 +42,8 @@ class TaskAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateTasks(tasks: List<Task>) {
-        this.tasks = tasks
+        this.tasks.clear()
+        this.tasks.addAll(tasks)
         notifyDataSetChanged()
     }
 

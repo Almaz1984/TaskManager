@@ -1,4 +1,4 @@
-package com.example.taskmanager.data
+package com.example.taskmanager.data.dao
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
