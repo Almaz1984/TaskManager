@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.R
-import com.example.taskmanager.utils.TimeUtils
 import com.example.taskmanager.data.models.Task
 import com.example.taskmanager.fragments.calendar.adapter.TaskAdapter
 import com.example.taskmanager.fragments.detailtask.DetailTaskFragment
 import com.example.taskmanager.fragments.newtask.NewTaskFragment
+import com.example.taskmanager.utils.TimeUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDateTime
 
@@ -41,7 +41,9 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         val taskClickListener =
-            { id: Long? -> presenter?.onTaskClicked(id) ?: throw IllegalStateException() }
+            { id: Long? ->
+                presenter?.onTaskClicked(id)
+            }
         taskListAdapter = TaskAdapter(taskClickListener)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view).apply {
@@ -51,8 +53,9 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         }
 
         val calendarView: CalendarView = view.findViewById(R.id.calendar_view)
-        calendarView.date = TimeUtils.getTimestampFromDateTime(presenter!!.getSelectedDate())
-        presenter?.getSelectedDate()?.let { presenter?.onDateChanged(it) }
+        presenter?.getSelectedDate()
+            ?.let { calendarView.date = TimeUtils.getTimestampFromDateTime(it) }
+        presenter?.init()
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             presenter?.onDateChanged(LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0))
@@ -67,7 +70,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         presenter = null
     }
 
-    override fun updateTaskList(taskList: List<Task>) {
+    override fun setTaskList(taskList: List<Task>) {
         taskListAdapter.updateTasks(taskList)
     }
 

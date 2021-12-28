@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.R
-import com.example.taskmanager.utils.TimeUtils
 import com.example.taskmanager.data.models.Task
+import com.example.taskmanager.utils.TimeUtils
 
 class TaskAdapter(
-    private val taskClickListener: (Long?) -> Unit,
+    private val taskClickListener: (Long?) -> Unit?,
     private val tasks: MutableList<Task> = mutableListOf()
 ) :
     RecyclerView.Adapter<TaskAdapter.MyViewHolder>() {

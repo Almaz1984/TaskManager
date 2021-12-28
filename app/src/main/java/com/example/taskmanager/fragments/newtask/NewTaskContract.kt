@@ -14,6 +14,7 @@ interface NewTaskContract {
         fun getTaskName(): String
         fun getDescription(): String
         fun backToPreviousFragment()
+        fun showToast(toastText: String)
     }
 
     interface Presenter {

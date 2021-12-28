@@ -8,12 +8,11 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-const val TIMESTAMP_PARSE_PATTERN = "yyyy-MM-dd HH:mm:ss[.SSS][.SS][.S]"
-const val DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm"
-const val DATE_FORMATTER = "dd MMM, yyyy"
-const val TIME_FORMATTER = "hh:mm a"
-
 object TimeUtils {
+    private const val TIMESTAMP_PARSE_PATTERN = "yyyy-MM-dd HH:mm:ss[.SSS][.SS][.S]"
+    private const val DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm"
+    private const val DATE_FORMATTER = "dd MMM, yyyy"
+    private const val TIME_FORMATTER = "hh:mm a"
 
     fun getTimeFromTimestamp(timestamp: Long): String {
         val dateFormat = DateTimeFormatter.ofPattern(TIMESTAMP_PARSE_PATTERN)

@@ -1,12 +1,12 @@
 package com.example.taskmanager.fragments.calendar
 
 import com.example.taskmanager.App
-import com.example.taskmanager.utils.TimeUtils
 import com.example.taskmanager.data.dao.TaskDatabase
 import com.example.taskmanager.data.models.NwTask
 import com.example.taskmanager.data.models.Task
 import com.example.taskmanager.data.models.TaskData
 import com.example.taskmanager.data.repository.TaskRepository
+import com.example.taskmanager.utils.TimeUtils
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-
 
 class CalendarPresenter(private val view: CalendarContract.View) :
     CalendarContract.Presenter {
@@ -42,19 +41,24 @@ class CalendarPresenter(private val view: CalendarContract.View) :
         view.showNewTaskFragment()
     }
 
+    override fun init() {
+        val selectedDayTimeStamp = TimeUtils.getTimestampFromDateTime(selectedDay)
+        updateTaskList(selectedDayTimeStamp)
+    }
+
     override fun onDateChanged(selectedDay: LocalDateTime) {
         val selectedDayTimeStamp = TimeUtils.getTimestampFromDateTime(selectedDay)
+        updateTaskList(selectedDayTimeStamp)
+        this.selectedDay = selectedDay
+    }
+
+    private fun updateTaskList(selectedDayTimeStamp: Long) {
         scope.launch(Dispatchers.Main) {
             val selectedDayTaskList = withContext(Dispatchers.IO) {
                 getSelectedDayTaskList(selectedDayTimeStamp)
             }
-            view.updateTaskList(selectedDayTaskList)
+            view.setTaskList(selectedDayTaskList)
         }
-        this.selectedDay = selectedDay
-    }
-
-    override fun onDateChanged() {
-        return onDateChanged(selectedDay)
     }
 
     private suspend fun getSelectedDayTaskList(selectedDay: Long): List<Task> {
@@ -68,20 +72,20 @@ class CalendarPresenter(private val view: CalendarContract.View) :
     private fun getSampleListFromJson(): List<Task> {
         val sampleJsonTaskList = listOf(
             "{'id':'1'," +
-                    "'date_start':'1637611980641'," +
-                    "'date_finish':'1637615580642'," +
-                    "'name':'Дело 1'," +
-                    "'description':'Описание дела 1'}",
+                "'date_start':'147600000'," +
+                "'date_finish':'147610000'," +
+                "'name':'Дело 1'," +
+                "'description':'Описание дела 1'}",
             "{'id':'2'," +
-                    "'date_start':'1637611980641'," +
-                    "'date_finish':'1637615580642'," +
-                    "'name':'Дело 2'," +
-                    "'description':'Описание дела 2'}",
+                "'date_start':'147686400'," +
+                "'date_finish':'147690000'," +
+                "'name':'Дело 2'," +
+                "'description':'Описание дела 2'}",
             "{'id':'3'," +
-                    "'date_start':'1637439180641'," +
-                    "'date_finish':'1637442780642'," +
-                    "'name':'Дело 3'," +
-                    "'description':'Описание дела 3'}"
+                "'date_start':'147772800'," +
+                "'date_finish':'147776400'," +
+                "'name':'Дело 3'," +
+                "'description':'Описание дела 3'}"
         )
         val taskList = mutableListOf<Task>()
         val builder = GsonBuilder()

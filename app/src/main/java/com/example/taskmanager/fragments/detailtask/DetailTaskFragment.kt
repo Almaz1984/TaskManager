@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.taskmanager.R
-import com.example.taskmanager.utils.TimeUtils
 import com.example.taskmanager.data.models.Task
-
-private const val TASK_TAG = "Task_tag"
+import com.example.taskmanager.utils.TimeUtils
 
 class DetailTaskFragment : Fragment() {
 
@@ -38,6 +36,7 @@ class DetailTaskFragment : Fragment() {
     }
 
     companion object {
+        private const val TASK_TAG = "Task_tag"
 
         @JvmStatic
         fun newInstance(task: Task): DetailTaskFragment {

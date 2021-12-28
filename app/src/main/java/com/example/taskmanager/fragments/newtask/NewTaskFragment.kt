@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.example.taskmanager.R
@@ -78,11 +79,11 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
     }
 
     override fun showDatePicker() {
-        val currentDate = presenter!!.getCurrentDate()
+        val currentDate = presenter?.getCurrentDate() ?: return
         val datePicker = DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
-                presenter!!.onDateSet(year, month, dayOfMonth)
+                presenter?.onDateSet(year, month, dayOfMonth)
             },
             currentDate.year, currentDate.month.value - 1, currentDate.dayOfMonth
         )
@@ -90,7 +91,7 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
     }
 
     override fun showTimeFromPicker() {
-        val currentTime = presenter!!.getCurrentDate().toLocalTime()
+        val currentTime = presenter?.getCurrentDate()?.toLocalTime() ?: return
         val timePicker = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
@@ -102,7 +103,7 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
     }
 
     override fun showTimeToPicker() {
-        val currentTime = presenter!!.getCurrentDate().toLocalTime()
+        val currentTime = presenter?.getCurrentDate()?.toLocalTime() ?: return
         val timePicker = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
@@ -135,6 +136,10 @@ class NewTaskFragment : Fragment(), NewTaskContract.View {
 
     override fun backToPreviousFragment() {
         activity?.onBackPressed()
+    }
+
+    override fun showToast(toastText: String) {
+        Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
